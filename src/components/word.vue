@@ -1,0 +1,300 @@
+<template>
+  <div class="content">
+    <div class="title">
+      <div class="title-big">浙江财经大学职工年度考核表</div>
+      <div class="title-small">（20019年度）</div>
+    </div>
+    <div class="formData">
+      <div class="form">
+        <el-form ref="form" label-position="left"  :model="formInline" :inline="true" label-width="100px">
+          <el-row :gutter="24">
+            <el-col :span="24">
+              <el-form-item label="部  门:" :label-width="60" class="bumen">
+                <template slot="label"><div class="department">部门：</div></template>
+                <el-input style="width: 200px;" v-model="formInline.name"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="24">
+            <el-col :span="8">
+              <el-form-item label="姓名">
+                <el-input v-model="formInline.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="性别">
+                <el-select v-model="formInline.sex">
+                  <el-option
+                    label="男"
+                    :value="1">
+                  </el-option>
+                  <el-option
+                    label="女"
+                    :value="0">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="出生年月">
+                <el-date-picker
+                  v-model="formInline.borthday"
+                  type="date"
+                  >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="24 ">
+            <el-col :span="8">
+              <el-form-item label="政治面貌">
+                <el-select v-model="formInline.politicalStatus" >
+                  <el-option
+                    v-for="item in politicalStatusOptions"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="文化程度">
+                <el-select v-model="formInline.education">
+                  <el-option
+                    v-for="item in educationOptions"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="行政职务">
+                <el-input v-model="formInline.administrativeDuties"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="24">
+            <el-col :span="8">
+              <el-form-item label="专业技术职务">
+                <el-input v-model="formInline.specializedTechnicalJob"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="16">
+              <el-form-item label="工作岗位">
+                <el-input v-model="formInline.jobPosition"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="24" class="center-row">
+            <el-col :span="2"><div class="text-col">个人总结</div></el-col>
+            <el-col :span="22">
+              <el-form-item>
+                <el-input type="textarea" :rows="10" v-model="formInline.personalSummary"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="24" class="center-row">
+            <el-col :span="2"><div class="text-col">部门考核意见</div></el-col>
+            <el-col :span="22">
+              <el-form-item>
+                <el-input type="textarea" :rows="10" v-model="formInline.departmentalAssessmentOpinions"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="form-foot">
+              <el-date-picker
+                style="width: 150px;margin-left:10px;"
+                v-model="value1"
+                type="date"
+                >
+              </el-date-picker>
+          </div>
+          <el-row :gutter="24" class="center-row">
+            <el-col :span="2"><div class="text-col">审批意见</div></el-col>
+            <el-col :span="22">
+              <el-form-item>
+                <el-input type="textarea" :rows="10" v-model="formInline.approvalComments"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="form-foot">
+              <el-date-picker
+                style="width: 150px;margin-left:10px;"
+                v-model="value1"
+                type="date"
+                >
+              </el-date-picker>
+          </div>
+          <el-row :gutter="24" class="center-row">
+            <el-col :span="2"><div class="text-col">个人确认</div></el-col>
+            <el-col :span="22">
+              <el-form-item style="border: 1px solid #DCDFE6">
+                <vue-esign ref="esign" :width="800" :height="300" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="form-foot">
+            <el-button plain @click="reset">重置</el-button>
+            <el-button type="primary" plain @click="sureSign">确认签名</el-button>
+              <el-date-picker
+                style="width: 150px;margin-left:10px;"
+                v-model="value1"
+                type="date"
+                >
+              </el-date-picker>
+          </div>
+        </el-form>
+        <div class="foot">
+          <el-divider content-position="right"><el-button type="primary">下载</el-button></el-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'word',
+  props: [],
+  data () {
+    return {
+      formInline: {
+        name: '',
+        sex: null,
+        borthday: '',
+        politicalStatus: null,
+        administrativeDuties: '',
+        specializedTechnicalJob: '',
+        jobPosition: '',
+        personalSummary: '',
+        departmentalAssessmentOpinions: '',
+        approvalComments: '',
+        personalConfirmation: ''
+      },
+      politicalStatusOptions: [
+        {
+          value: 1,
+          label: '中共党员'
+        },
+        {
+          value: 2,
+          label: '中共预备党员'
+        },
+        {
+          value: 3,
+          label: '共青团员'
+        },
+        {
+          value: 4,
+          label: '群众'
+        },
+        {
+          value: 5,
+          label: '其他'
+        }
+      ],
+      educationOptions: [
+        {
+          value: 1,
+          label: '本科'
+        },
+        {
+          value: 2,
+          label: '硕士'
+        },
+        {
+          value: 3,
+          label: '博士'
+        }
+      ]
+    }
+  },
+  methods: {
+    reset () {
+      this.$refs.esign.reset()
+    },
+    sureSign () {
+      this.$refs.esign.generate().then(res => {
+        console.log(res) // base64图片
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    }
+  }
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+.content {
+  height: 100%;
+  width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  .title {
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    padding-top: 25px;
+    .title-big {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .title-small {
+      margin-top: 5px;
+    }
+  }
+  .formData {
+    text-align: left;
+    padding: 15px;
+    .department {
+      font-size: 16px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .form {
+      padding: 15px;
+      /deep/ .el-form-item__content {
+        width: 150px;
+      }
+      /deep/ .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 100%;
+      }
+      /deep/ .el-form-item {
+        width:100%;
+        /deep/ .el-form-item__content {
+          width: 100%;
+        }
+      }
+      /deep/ .bumen .el-form-item__content {
+        width: 200px;
+      }
+      .text-col {
+        width: 14px;
+        margin: 0 auto;
+        font-size: 14px;
+        color: #606266;
+      }
+      .center-row {
+        display: flex;
+        align-items: center;
+      }
+      .form-foot {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  .foot {
+    margin-top: 60px;
+  }
+}
+
+</style>
