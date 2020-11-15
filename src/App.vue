@@ -1,26 +1,32 @@
 <template>
   <div id="app">
-    <word></word>
+    <div class="content">
+      <upload class="upload"></upload>
+      <word></word>
+    </div>
   </div>
 </template>
 
 <script>
 import word from './components/word'
+import upload from './components/upload'
+import Word from './components/word.vue'
 export default {
   name: 'App',
   components: {
-    word
+    word,
+    upload
   }
 }
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    Word</script>
+
+<style lang="scss">
+@import './scss/index.scss';
+
+.upload{
+  padding: 20px;
+  display: flex;
+  justify-content: center;
 }
 </style>

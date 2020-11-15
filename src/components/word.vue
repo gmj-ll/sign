@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div>
     <div class="title">
       <div class="title-big">浙江财经大学职工年度考核表</div>
       <div class="title-small">（20019年度）</div>
@@ -230,71 +230,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
-.content {
-  height: 100%;
-  width: 900px;
-  margin: 0 auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  .title {
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    padding-top: 25px;
-    .title-big {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .title-small {
-      margin-top: 5px;
-    }
-  }
-  .formData {
-    text-align: left;
-    padding: 15px;
-    .department {
-      font-size: 16px;
-      font-weight: bold;
-      display: inline-block;
-    }
-    .form {
-      padding: 15px;
-      /deep/ .el-form-item__content {
-        width: 150px;
-      }
-      /deep/ .el-date-editor.el-input, .el-date-editor.el-input__inner {
-        width: 100%;
-      }
-      /deep/ .el-form-item {
-        width:100%;
-        /deep/ .el-form-item__content {
-          width: 100%;
-        }
-      }
-      /deep/ .bumen .el-form-item__content {
-        width: 200px;
-      }
-      .text-col {
-        width: 14px;
-        margin: 0 auto;
-        font-size: 14px;
-        color: #606266;
-      }
-      .center-row {
-        display: flex;
-        align-items: center;
-      }
-      .form-foot {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-      }
-    }
-  }
-  .foot {
-    margin-top: 60px;
-  }
-}
+
 
 </style>
