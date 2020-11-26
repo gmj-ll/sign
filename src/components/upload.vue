@@ -26,7 +26,9 @@ export default {
       form.append('file', param.file)
       form.append('name', '12138');
       upload(form).then(res => {
-        console.log(res)
+        if (res.code === 200) {
+          this.$emit('getContent',res.data)
+        }
       })
     }
   }

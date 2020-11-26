@@ -2,8 +2,34 @@ import request from '../axios/request'
 
 export function upload(data) {
   return request({
-    url: '',
+    url: '/upload',
+    method: 'post',
+    data,
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+}
+
+export function getTags() {
+  return request({
+    url: '/tags/getTags',
     method: 'get',
-    data
+  })
+}
+
+export function addTags(data) {
+  return request({
+    url: '/tags/addTags',
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+
+export function deleteTags(data) {
+  return request({
+    url: '/tags/deleteTags',
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
   })
 }

@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <div class="title-big">浙江财经大学职工年度考核表</div>
-      <div class="title-small">（20019年度）</div>
+      <div class="title-small">（2019年度）</div>
     </div>
     <div class="formData">
       <div class="form">
@@ -160,7 +160,12 @@
 <script>
 export default {
   name: 'word',
-  props: [],
+  props: {
+    Content: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       formInline: {

@@ -5,7 +5,7 @@
         <el-form-item
           v-for="(domain, index) in dynamicValidateForm.domains"
           :label="'选项' + (index + 1)"
-          :key="domain.key"
+          :key="index"
           :prop="'domains.' + index + '.value'"
           :rules="{
       required: true, message: '请输入', trigger: 'blur'
@@ -61,6 +61,7 @@ export default {
     submitForm() {
       this.$refs.dynamicValidateForm.validate((valid) => {
         if (valid) {
+          this.$emit('selectSave', this.dynamicValidateForm.domains)
           this.dynamicValidateForm = {
             domains: [
               {
@@ -68,7 +69,6 @@ export default {
               },
             ],
           }
-          this.$emit('selectSave', this.dynamicValidateForm.domains)
         } else {
           console.log('error submit!!')
           return false
@@ -83,8 +83,7 @@ export default {
     },
     addDomain() {
       this.dynamicValidateForm.domains.push({
-        value: '',
-        key: Date.now(),
+        value: ''
       })
     },
   },

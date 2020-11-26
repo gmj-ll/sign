@@ -3,12 +3,7 @@ import axios from 'axios'
 const service = axios.create({
   baseURL: 'http://139.196.85.119:3000/',
   // withCredentials: true,
-  timeout: 5000,
-  headers: {
-    post: {
-        "Content-Type": "multipart/form-data"
-    }
-},
+  timeout: 5000
 })
 
 service.interceptors.request.use(

@@ -2,9 +2,9 @@
   <div id="app">
     <div class="content">
       <div class="setting-icon"><el-button type="primary" icon="el-icon-setting" @click="isShow = true">上传设置</el-button></div>
-      <upload class="upload"></upload>
-      <word></word>
-      <upload-setting :visible.sync="isShow"></upload-setting>
+      <upload class="upload" @getContent="getContent"></upload>
+      <word :Content="Content"></word>
+      <upload-setting :tagsArr="tagsArr" @regetTags="getTags" :visible.sync="isShow"></upload-setting>
     </div>
   </div>
 </template>
@@ -14,6 +14,7 @@ import word from './components/word'
 import upload from './components/upload'
 import Word from './components/word.vue'
 import uploadSetting from './components/uploadSetting'
+import { getTags } from './api'
 export default {
   name: 'App',
   components: {
@@ -23,7 +24,25 @@ export default {
   },
   data () {
     return {
-      isShow: false
+      isShow: false,
+      tagsArr: [],
+      Content: []
+    }
+  },
+  created() {
+    this.getTags()
+  },
+  methods: {
+    getTags() {
+      getTags().then(res => {
+        if (res.code === 200) {
+          this.tagsArr = res.data
+        }
+      })
+    },
+    getContent (data) {
+      console.log(data)
+      this.Content = data
     }
   }
 }
