@@ -33,3 +33,12 @@ export function deleteTags(data) {
     headers: { 'Content-Type': 'application/json' },
   })
 }
+
+export function updateTags(data) {
+  return request({
+    url: '/tags/updateTags',
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}

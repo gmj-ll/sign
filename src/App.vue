@@ -26,7 +26,7 @@ export default {
     return {
       isShow: false,
       tagsArr: [],
-      Content: []
+      Content: {}
     }
   },
   created() {
@@ -49,8 +49,8 @@ export default {
 
     Word</script>
 
-<style lang="scss">
-@import './scss/index.scss';
+<style lang="scss" scoped>
+// @import './scss/index.scss';
 
 .upload{
   padding: 20px;
@@ -60,5 +60,11 @@ export default {
 .setting-icon {
   float: right;
   padding: 10px;
+}
+.content {
+  height: 100%;
+  width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 }
 </style>

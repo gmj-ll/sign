@@ -34,41 +34,40 @@ export default {
       type: Boolean,
       default: false,
     },
+    selectData: {
+      type: Array,
+      default: () => [{value: ''}]
+    }
   },
   components: {},
+  computed: {
+    selectDataCopy () {
+      console.log(this.selectData)
+      if (this.selectData.length === 0) {
+        let arr = [{value: ''}]
+        return arr
+      }
+      return JSON.parse(JSON.stringify(this.selectData))
+    } 
+  },
   data() {
     return {
       dynamicValidateForm: {
-        domains: [
-          {
-            value: '',
-          },
-        ],
+        domains: [{value: ''}]
       },
     }
+  },
+  created () {
+    this.dynamicValidateForm.domains = this.selectDataCopy.slice()
   },
   methods: {
     handleClose() {
       this.$emit('update:editSelectModel', false)
-      this.dynamicValidateForm = {
-        domains: [
-          {
-            value: '',
-          },
-        ],
-      }
     },
     submitForm() {
       this.$refs.dynamicValidateForm.validate((valid) => {
         if (valid) {
           this.$emit('selectSave', this.dynamicValidateForm.domains)
-          this.dynamicValidateForm = {
-            domains: [
-              {
-                value: '',
-              },
-            ],
-          }
         } else {
           console.log('error submit!!')
           return false

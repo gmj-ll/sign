@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="编辑标签" :visible="editModel" @close="handleClose" width="30%" :close-on-click-modal="false" append-to-body>
-    <div class='content-Edit'>
+    <div class="content-Edit">
       <el-form ref="form" :model="form" label-width="80px" label-position="left">
         <el-form-item label="标签名称">
           <el-input v-model="form.name"></el-input>
@@ -25,13 +25,13 @@
       <el-button @click="handleClose">取 消</el-button>
       <el-button type="primary" @click="addTags">确 定</el-button>
     </span>
-    <select-content :editSelectModel.sync="editSelectModel" @selectSave="selectSave"></select-content>
+    <select-content v-if="editSelectModel" :editSelectModel.sync="editSelectModel" :selectData="form.options ? form.options: [{value: ''}]" @selectSave="selectSave"></select-content>
   </el-dialog>
 </template>
 
 <script>
 import selectContent from './selectContent'
-import { addTags } from '../api'
+import { addTags, updateTags } from '../api'
 export default {
   name: 'editTag',
   props: {
@@ -39,74 +39,95 @@ export default {
       type: Boolean,
       default: false,
     },
+    updateData: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
-    selectContent
+    selectContent,
   },
   computed: {
-    canStep () {
+    canStep() {
       if (this.form.type === 'textarea' || this.form.type === 'sign') {
         return true
       } else {
         return false
       }
-    }
+    },
   },
   watch: {
-    'form.type' (newValue) {
+    'form.type'(newValue) {
       console.log(newValue)
       if (this.form.type === 'textarea' || this.form.type === 'sign') {
         this.form.contentWidth = 12
       }
-      if (this.form.type === 'text' || this.form.type === 'select' || this.form.type === 'date') {
+      if (
+        this.form.type === 'text' ||
+        this.form.type === 'select' ||
+        this.form.type === 'date'
+      ) {
         this.form.contentWidth = 2
       }
-    }
+    },
   },
   data() {
     return {
       editSelectModel: false,
       form: {
-        contentWidth: 0,
-        name: '',
-        type: ''
+        contentWidth: this.updateData.contentWidth
+          ? this.updateData.contentWidth
+          : 2,
+        options: this.updateData.options ? JSON.parse(this.updateData.options) : [],
+        name: this.updateData.name ? this.updateData.name : '',
+        type: this.updateData.type ? this.updateData.type : '',
+        id: this.updateData.id ? this.updateData.id : null,
       },
     }
   },
   methods: {
     handleClose() {
-      this.form = {
-        contentWidth: 0,
-        name: '',
-        type: ''
-      },
       this.$emit('update:editModel', false)
     },
-    selectSave (arr) {
+    selectSave(arr) {
       this.editSelectModel = false
       this.form.options = arr
     },
-    addTags () {
+    addTags() {
+      this.form.options = JSON.stringify(this.form.options)
       console.log(this.form)
-      addTags(this.form).then(res =>{
-        if (res.code === 200) {
-        this.$message({
-          message: '添加成功',
-          type: 'success'
-        });
-          this.$emit('update:editModel', false)
-          this.$emit('regetTags')
-        }
-      })
-    }
+      if (this.form.id) {
+        updateTags(this.form).then((res) => {
+          if (res.code === 200) {
+            this.$message({
+              message: '更新成功',
+              type: 'success',
+            })
+            this.$emit('update:editModel', false)
+            this.$emit('regetTags')
+          }
+        })
+      } else {
+        addTags(this.form).then((res) => {
+          if (res.code === 200) {
+            this.$message({
+              message: '添加成功',
+              type: 'success',
+            })
+            this.$emit('update:editModel', false)
+            this.$emit('regetTags')
+          }
+        })
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .content-Edit {
-  /deep/.el-select{
-  width: 100%
-}
+  /deep/.el-select {
+    width: 100%;
+  }
 }
 </style>

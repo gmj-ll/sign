@@ -2,16 +2,25 @@
   <el-dialog title="上传设置" :visible="visible" @close="handleClose" :close-on-click-modal="false" width="40%">
     <div class="content-tag">
       <div class="tags">
-        <div v-for="item in tagsList" :key="item.id"><el-tag closable @close="deleteTag(item)">{{item.name}}</el-tag></div>
+        <div v-for="item in tagsList" style="cursor: pointer;" :key="item.id" @click.stop="updateTags(item)">
+          <el-popover placement="top" width="160" v-model="deleteModel[item.id]">
+            <p>确认删除该标签?</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="deleteModel[item.id] = false">取消</el-button>
+              <el-button type="primary" size="mini" @click="deleteTag(item)">确定</el-button>
+            </div>
+            <el-tag closable slot="reference" @close="showDelete(item)">{{item.name}}</el-tag>
+          </el-popover>
+        </div>
         <div>
-          <el-button class="button-new-tag" size="small" @click="editModel = true">+ 新增</el-button>
+          <el-button class="button-new-tag" size="small" @click="editModel = true, updateData={}">+ 新增</el-button>
         </div>
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">关 闭</el-button>
     </span>
-    <edit-tag :editModel.sync="editModel" @regetTags="regetTags"></edit-tag>
+    <edit-tag v-if="editModel" :editModel.sync="editModel" :updateData="updateData" @regetTags="regetTags"></edit-tag>
   </el-dialog>
 </template>
 
@@ -23,41 +32,55 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tagsArr: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   computed: {
-    tagsList () {
+    tagsList() {
       return JSON.parse(JSON.stringify(this.tagsArr))
     }
   },
   components: {
-    editTag
+    editTag,
   },
-  data () {
+  created() {
+    this.tagsList.forEach((item) => {
+      this.deleteModel[item.id] = false
+    })
+  },
+  data() {
     return {
-      editModel: false
+      editModel: false,
+      updateData: {},
+      deleteModel: {},
     }
   },
   methods: {
-    handleClose () {
-      this.$emit('update:visible',false)
+    handleClose() {
+      this.$emit('update:visible', false)
     },
-    deleteTag (tag) {
-      deleteTags({ id: tag.id}).then(res=> {
+    deleteTag(tag) {
+      deleteTags({ id: tag.id }).then((res) => {
         if (res.code === 200) {
           this.$emit('regetTags')
         }
       })
     },
-    regetTags () {
+    regetTags() {
       this.$emit('regetTags')
-    }
-  }
+    },
+    showDelete (item) {
+      this.$set(this.deleteModel, item.id, true)
+    },
+    updateTags(tags) {
+      this.editModel = true
+      this.updateData = tags
+    },
+  },
 }
 </script>
 
