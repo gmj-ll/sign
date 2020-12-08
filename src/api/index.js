@@ -42,3 +42,12 @@ export function updateTags(data) {
     headers: { 'Content-Type': 'application/json' },
   })
 }
+
+export function save(data) {
+  return request({
+    url: '/save',
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
