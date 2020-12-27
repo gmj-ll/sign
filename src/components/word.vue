@@ -6,19 +6,19 @@
     <div class="fromTitleArr">
       <div v-for="item in Content.formTitle" :key="item.id">
         <span>{{item.name}}</span>
-        <el-input :class="item.type" v-model="formInline[item.name]" />
+        <el-input :class="item.type" v-model="formInline[item.key]" />
       </div>
     </div>
     <div class="form">
       <el-form ref="form" label-position="left" :model="formInline" :inline="true" label-width="100">
         <div class="form-item">
           <el-form-item v-for="item in Content.form" :style="'width:'+ 120*item.contentWidth + 'px'" :key="item.id" :label="item.name" label-width="60">
-            <el-input v-if="item.type === 'text'" v-model="formInline[item.name]"></el-input>
-            <el-input type="textarea" v-if="item.type === 'textarea'" :rows="10" v-model="formInline[item.name]"></el-input>
-            <el-select v-if="item.type === 'select'" v-model="formInline[item.name]">
+            <el-input v-if="item.type === 'text'" v-model="formInline[item.key]"></el-input>
+            <el-input type="textarea" v-if="item.type === 'textarea'" :rows="10" v-model="formInline[item.key]"></el-input>
+            <el-select v-if="item.type === 'select'" v-model="formInline[item.key]">
               <el-option v-for="opt in JSON.parse(item.options)" :key="opt.value" :label="opt.value" :value="opt.value"></el-option>
             </el-select>
-            <el-date-picker v-if="item.type === 'date'" v-model="formInline[item.name]" type="date"></el-date-picker>
+            <el-date-picker v-if="item.type === 'date'" v-model="formInline[item.key]" type="date"></el-date-picker>
             <div v-if="item.type === 'sign'">
               <div style="border: 1px solid #DCDFE6">
                 <vue-esign ref="esign" />
@@ -48,6 +48,8 @@ export default {
       default: () => {},
     },
   },
+  mounted () {
+  },
   data() {
     return {
       formInline: {
@@ -62,6 +64,8 @@ export default {
         departmentalAssessmentOpinions: '',
         approvalComments: '',
         personalConfirmation: '',
+        sign_base64: '',
+        fileName: ''
       },
     }
   },
@@ -73,14 +77,18 @@ export default {
       this.$refs.esign[0]
         .generate()
         .then((res) => {
-          console.log(res) // base64图片
+          this.formInline.sign_base64 = res
         })
         .catch((err) => {
           this.$message.error(err)
         })
     },
     save () {
-      save(this.formInline)
+      this.formInline.fileName = this.Content.fileName
+      save(this.formInline).then(() => {
+        console.log('aaaaa')
+        window.open('http://139.196.85.119:3000/download', '_self')
+      })
     }
   },
 }
