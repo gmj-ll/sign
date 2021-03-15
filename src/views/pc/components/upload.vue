@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { upload } from '../api/index'
+import { upload } from '../../../api/index'
 export default {
   name: 'upload',
   props: {},

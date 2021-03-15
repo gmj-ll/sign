@@ -21,4 +21,4 @@ npm run lint
 ```
 
 ### Online Web
-See [here](http://139.196.85.119:8080/dist/).
+See [here](http://139.196.85.119:8080/).

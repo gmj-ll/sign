@@ -51,3 +51,12 @@ export function save(data) {
     headers: { 'Content-Type': 'application/json' },
   })
 }
+
+export function uploadImg(data) {
+  return request({
+    url: '/uploadImg',
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}

@@ -26,7 +26,7 @@
 
 <script>
 import editTag from './editTag'
-import { deleteTags } from '../api'
+import { deleteTags } from '../../../api'
 export default {
   name: 'uploadSetting',
   props: {

@@ -12,12 +12,18 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.14.0",
     "mammoth": "^1.4.14",
+    "qrcode": "^1.4.4",
     "vue": "^2.6.11",
-    "vue-esign": "^1.0.5"
+    "vue-esign": "^1.0.5",
+    "vue-qriously": "^1.1.1",
+    "vue-router": "^3.2.0",
+    "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.4.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.11",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

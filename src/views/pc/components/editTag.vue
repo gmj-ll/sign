@@ -31,7 +31,7 @@
 
 <script>
 import selectContent from './selectContent'
-import { addTags, updateTags } from '../api'
+import { addTags, updateTags } from '../../../api'
 export default {
   name: 'editTag',
   props: {
