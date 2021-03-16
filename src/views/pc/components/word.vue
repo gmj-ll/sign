@@ -21,7 +21,10 @@
             <el-date-picker v-if="item.type === 'date'" v-model="formInline[item.key]" type="date"></el-date-picker>
             <div v-if="item.type === 'sign'">
               <div style="border: 1px solid #DCDFE6">
-                <vue-esign ref="esign" />
+                <vue-esign ref="esign" v-if="!isSign" />
+                <div v-if="isSign">
+                  <img style="width: 720px;" :src="signUrl">
+                </div>
               </div>
               <div>
                 <el-button plain @click="reset">重置</el-button>
@@ -46,7 +49,7 @@ import { save } from '../../../api'
 export default {
   name: 'word',
   components: {
-    showImg
+    showImg,
   },
   props: {
     Content: {
@@ -54,7 +57,16 @@ export default {
       default: () => {},
     },
   },
-  mounted () {
+  mounted() {
+    console.log(document.domain)
+    this.sockets.subscribe('getImg', (data) => {
+      console.log(data)
+      if (data.url) {
+        this.signUrl = `http://139.196.85.119:3000/${data.url}`
+        this.isSign = true
+        this.editModel = false
+      }
+    })
   },
   data() {
     return {
@@ -71,9 +83,11 @@ export default {
         approvalComments: '',
         personalConfirmation: '',
         sign_base64: '',
-        fileName: ''
+        fileName: '',
       },
-      editModel: false
+      editModel: false,
+      isSign: false,
+      signUrl: ''
     }
   },
   methods: {
@@ -90,16 +104,16 @@ export default {
           this.$message.error(err)
         })
     },
-    save () {
+    save() {
       this.formInline.fileName = this.Content.fileName
       save(this.formInline).then(() => {
         console.log('aaaaa')
-        window.open('http://139.196.85.119:3000/download', '_self')
+        window.open('http://localhost:3000/download', '_self')
       })
     },
-    openQRcode () {
+    openQRcode() {
       this.editModel = true
-    }
+    },
   },
 }
 </script>

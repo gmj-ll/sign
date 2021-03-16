@@ -1,11 +1,15 @@
 <template>
   <div id="app">
     <div class="content">
-      <div class="setting-icon"><el-button type="primary" icon="el-icon-setting" @click="isShow = true">上传设置</el-button></div>
+      <div class="setting-icon">
+        <el-button type="primary" icon="el-icon-setting" @click="isShow = true">上传设置</el-button>
+      </div>
       <upload class="upload" @getContent="getContent"></upload>
       <word ref="word" :Content="Content"></word>
       <div v-if="JSON.stringify(uploadData) !=='{}'">
-      <div><el-button type="primary" @click="download">下载</el-button></div>
+        <div>
+          <el-button type="primary" @click="download">下载</el-button>
+        </div>
       </div>
       <upload-setting :tagsArr="tagsArr" @regetTags="getTags" :visible.sync="isShow"></upload-setting>
     </div>
@@ -23,47 +27,53 @@ export default {
   components: {
     word,
     upload,
-    uploadSetting
+    uploadSetting,
   },
-  data () {
+  data() {
     return {
       isShow: false,
       tagsArr: [],
       Content: {},
-      uploadData: {}
+      uploadData: {},
     }
   },
   created() {
     this.getTags()
   },
+  mounted() {
+    // this.$socket.emit('sentToServer', {
+    //   username: 'username',
+    //   password: 'password',
+    // })
+
+  },
   methods: {
     getTags() {
-      getTags().then(res => {
+      getTags().then((res) => {
         if (res.code === 200) {
           this.tagsArr = res.data
         }
       })
     },
-    getContent (data) {
+    getContent(data) {
       console.log(data)
       this.Content = data
     },
-    getUploadData (data) {
+    getUploadData(data) {
       console.log(data)
       this.uploadData = data
     },
-    download () {
-
-    }
-  }
+    download() {},
+  },
 }
 
-    Word</script>
+Word
+</script>
 
 <style lang="scss" scoped>
 // @import './scss/index.scss';
 
-.upload{
+.upload {
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -76,6 +86,6 @@ export default {
   height: 100%;
   width: 900px;
   margin: 0 auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 </style>
