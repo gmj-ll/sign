@@ -1610,3 +1610,44 @@ CREATE TABLE `imgs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
+下载word 的py脚本（未完成）
+```
+from docx import Document
+from docx.shared import Inches
+import re
+import sys
+import json
+
+
+# doc = Document(sys.argv[1])
+
+doc = Document('./uploads/1608469102615-1.docx')
+
+obj = json.loads(json.dumps(sys.argv[2]))
+
+# 按表格读取全部数据
+for table in doc.tables:
+    for row in table.rows:
+      print (row.cells)
+      if row.cells[0].text.replace('\n', '').replace('\r', '').replace(' ', '').replace('：', '').replace(':', '') in obj:
+        # row.cells[1].text = obj[row.cells[0].text.replace('\n', '').replace('\r', '').replace(' ', '').replace('：', '').replace(':', '')]
+        row.cells[2].text = obj[row.cells[0].text.replace('\n', '').replace('\r', '').replace(' ', '').replace('：', '').replace(':', '')]
+doc.add_page_break()
+doc.save('demo.docx')
+content = {}
+
+content['msg'] = '修改成功'
+# content['cell'] = sorted(set(celltext), key=celltext.index)
+
+print(json.dumps(content))
+```
+
+可以增加的内容
+
+1. 写一个登录/微信扫码登录页面(前后端约200~300行)
+2. 前端使用vuex 约100行
+3. 页面功能复杂化，展示上传的文件列表信息 前后端约200~300行
+4. 登录过后可以保存个人信息，之后填写自动加载
+5. 训练一个自动识别标签的模型，如果没有手动添加识别标签，经过模型的计算得出一个大概的标签类型和标签类型和标签值再渲染出来  代码量未知
+
+1大约一周   2，3加起来一周   4需要蛮久  5时间未知
