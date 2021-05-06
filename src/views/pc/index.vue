@@ -5,7 +5,7 @@
         <el-button type="primary" icon="el-icon-setting" @click="isShow = true">上传设置</el-button>
       </div>
       <upload class="upload" @getContent="getContent"></upload>
-      <word ref="word" :Content="Content"></word>
+      <word :tagsArr="tagsArr" ref="word" :Content="Content"></word>
       <div v-if="JSON.stringify(uploadData) !=='{}'">
         <div>
           <el-button type="primary" @click="download">下载</el-button>
