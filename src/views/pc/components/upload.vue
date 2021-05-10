@@ -21,7 +21,6 @@ export default {
   },
   methods: {
     uploadword (param) {
-      console.log(param)
       let form = new FormData()
       form.append('file', param.file)
       form.append('name', '12138');

@@ -52,6 +52,7 @@ export default {
       getTags().then((res) => {
         if (res.code === 200) {
           this.tagsArr = res.data
+          console.log(res.data)
         }
       })
     },

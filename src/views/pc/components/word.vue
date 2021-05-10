@@ -1,19 +1,22 @@
 <template>
   <div style="padding: 10px">
+    {{formInline}}-----------------------
+    {{Content.form}}
     <div class="title">
       <div :class="item.type" v-for="item in Content.title" :key="item.id">{{item.name}}</div>
     </div>
-    <div class="fromTitleArr">
+    <!-- <div class="fromTitleArr">
       <div v-for="item in Content.formTitle" :key="item.id">
         <span>{{item.name}}</span>
-        <el-input :class="item.type" v-model="formInline[item.key].value" />
+        <el-input :class="item.type" v-model="formTitle[item.key].value" />
       </div>
-    </div>
-    <div class="form">
+    </div> -->
+    <div class="form" v-if="JSON.stringify(formInline) !== '{}'">
       <el-form ref="form" label-position="left" :model="formInline" :inline="true" label-width="100">
         <div class="form-item">
           <el-form-item v-for="item in Content.form" :style="'width:'+ 120*item.contentWidth + 'px'" :key="item.id" :label="item.name" label-width="60">
-            <el-input v-if="item.type === 'text'" v-model="formInline[item.key].value"></el-input>
+            {{formInline[item.key]}}
+            <!-- <el-input v-if="item.type === 'text'" v-model="formInline[item.key].value"></el-input>
             <el-input type="textarea" v-if="item.type === 'textarea'" :rows="10" style="width:100%" v-model="formInline[item.key].value"></el-input>
             <el-select v-if="item.type === 'select'" v-model="formInline[item.key].value">
               <el-option v-for="opt in JSON.parse(item.options)" :key="opt.value" :label="opt.value" :value="opt.value"></el-option>
@@ -31,12 +34,12 @@
                 <el-button type="primary" plain @click="sureSign">确认签名</el-button>
                 <el-button type="primary" plain @click="openQRcode">扫码签名</el-button>
               </div>
-            </div>
+            </div> -->
           </el-form-item>
         </div>
       </el-form>
     </div>
-    <div>
+    <div v-if="JSON.stringify(Content) !== '{}'">
       <el-button @click="save">保存</el-button>
     </div>
     <show-img v-if="editModel" :editModel.sync="editModel"></show-img>
@@ -62,7 +65,6 @@ export default {
     }
   },
   mounted() {
-    console.log(document.domain)
     this.sockets.subscribe('getImg', (data) => {
       console.log(data)
       if (data.url) {
@@ -89,25 +91,50 @@ export default {
         // sign_base64: '',
         // fileName: '',
       },
+      formTitle: {},
       editModel: false,
       isSign: false,
       signUrl: ''
     }
   },
   watch: {
-    tagsArr: {
+    // tagsArr: {
+    //   handler (val) {
+    //     let obj = {}
+    //     val.forEach(item => {
+    //       if (item.key) {
+    //         obj[item.key] = {
+    //           value: '',
+    //           name: item.name
+    //         }
+    //       }
+    //     })
+    //     this.formInline = Object.assign({}, this.formInline, obj)
+    //   },
+    //   deep: true
+    // },
+    Content: {
       handler (val) {
         let obj = {}
-        val.forEach(item => {
+        val.form.forEach(item => {
           if (item.key) {
             obj[item.key] = {
               value: '',
               name: item.name
             }
           }
-
+        })
+        let title = {}
+        val.formTitle.forEach(item => {
+          if (item.key) {
+            title[item.key] = {
+              value: '',
+              name: item.name
+            }
+          }
         })
         this.formInline = Object.assign({}, this.formInline, obj)
+        this.formTitle = Object.assign({}, this.formTitle, title)
       },
       deep: true
     }
@@ -120,7 +147,7 @@ export default {
       this.$refs.esign[0]
         .generate()
         .then((res) => {
-          this.tagsArr.forEach(item => {
+          this.Content.form.forEach(item => {
             if (item.type === 'sign') {
               this.formInline[item.key].value = res
             }
