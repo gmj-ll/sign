@@ -12,7 +12,7 @@
             <el-option label="时间" value="date"></el-option>
             <el-option label="长文本" value="textarea"></el-option>
             <el-option label="可绘制" value="sign"></el-option>
-            <el-option label="表单标题" value="tableTitle"></el-option>
+            <el-option label="表单标题" value="formTitle"></el-option>
           </el-select>
           <el-button v-if="form.type==='select'" style="margin-top: 10px" size="small" type="primary" @click="editSelectModel = true">选择框内容编辑</el-button>
         </el-form-item>

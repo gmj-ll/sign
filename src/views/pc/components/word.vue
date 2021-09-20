@@ -68,7 +68,7 @@ export default {
     this.sockets.subscribe('getImg', (data) => {
       console.log(data)
       if (data.url) {
-        this.signUrl = `http://139.196.85.119:3000/${data.url}`
+        this.signUrl = `http://localhost:3000/${data.url}`
         this.isSign = true
         this.editModel = false
       }
@@ -166,8 +166,9 @@ export default {
         }
       })
       save({data: postData, fileName: this.Content.fileName, formTitle: postformTitle}).then((res) => {
-        if (res. code === 200) {
-          window.open(`http://139.196.85.119:3000/${res.data.msg}`, '_self')
+        console.log(res)
+        if (res.code === 200) {
+          window.open(`http://localhost:3000/${res.data.msg}`, '_self')
         }
         console.log(res.data.msg)
         

@@ -13,7 +13,7 @@ Vue.use(ElementUI);
 Vue.use(vueEsign)
 Vue.use(new VueSocketio({
   // debug: true,
-  connection: 'http://139.196.85.119:3000' //地址+端口，由后端提供
+  connection: 'http://localhost:3000' //地址+端口，由后端提供
 }));
 
 Vue.config.productionTip = false
