@@ -94,8 +94,10 @@ export default {
       this.form.options = arr
     },
     addTags() {
-      this.form.options = JSON.stringify(this.form.options)
       console.log(this.form)
+
+      this.form.options = Array.isArray(this.form.options) ? JSON.stringify(this.form.options) : this.form.options
+      
       if (this.form.id) {
         updateTags(this.form).then((res) => {
           if (res.code === 200) {

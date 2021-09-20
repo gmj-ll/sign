@@ -1,27 +1,27 @@
 <template>
   <div style="padding: 10px">
-    {{formInline}}-----------------------
-    {{Content.form}}
     <div class="title">
       <div :class="item.type" v-for="item in Content.title" :key="item.id">{{item.name}}</div>
     </div>
-    <!-- <div class="fromTitleArr">
+    <div class="fromTitleArr">
       <div v-for="item in Content.formTitle" :key="item.id">
-        <span>{{item.name}}</span>
-        <el-input :class="item.type" v-model="formTitle[item.key].value" />
+        <el-form ref="form111" :model="formInline">
+          <el-form-item :label="item.name">
+            <el-input :class="item.type" v-model="formTitle[item.key].value" />
+          </el-form-item>
+        </el-form>
       </div>
-    </div> -->
+    </div>
     <div class="form" v-if="JSON.stringify(formInline) !== '{}'">
       <el-form ref="form" label-position="left" :model="formInline" :inline="true" label-width="100">
         <div class="form-item">
           <el-form-item v-for="item in Content.form" :style="'width:'+ 120*item.contentWidth + 'px'" :key="item.id" :label="item.name" label-width="60">
-            {{formInline[item.key]}}
-            <!-- <el-input v-if="item.type === 'text'" v-model="formInline[item.key].value"></el-input>
+            <el-input v-if="item.type === 'text'" v-model="formInline[item.key].value"></el-input>
             <el-input type="textarea" v-if="item.type === 'textarea'" :rows="10" style="width:100%" v-model="formInline[item.key].value"></el-input>
             <el-select v-if="item.type === 'select'" v-model="formInline[item.key].value">
               <el-option v-for="opt in JSON.parse(item.options)" :key="opt.value" :label="opt.value" :value="opt.value"></el-option>
             </el-select>
-            <el-date-picker v-if="item.type === 'date'" v-model="formInline[item.key].value" type="date"></el-date-picker>
+            <el-date-picker v-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="formInline[item.key].value" type="date"></el-date-picker>
             <div v-if="item.type === 'sign'">
               <div style="border: 1px solid #DCDFE6">
                 <vue-esign ref="esign" v-if="!isSign" />
@@ -34,7 +34,7 @@
                 <el-button type="primary" plain @click="sureSign">确认签名</el-button>
                 <el-button type="primary" plain @click="openQRcode">扫码签名</el-button>
               </div>
-            </div> -->
+            </div>
           </el-form-item>
         </div>
       </el-form>
@@ -159,12 +159,13 @@ export default {
     },
     save() {
       let postData = JSON.parse(JSON.stringify(this.formInline))
+      let postformTitle = JSON.parse(JSON.stringify(this.formTitle))
       Object.keys(postData).forEach(key => {
         if (postData[key].value instanceof Date) {
           postData[key].value = dayjs(postData[key]).format('YYYY-MM-DD HH:mm:ss')
         }
       })
-      save({data: postData, fileName: this.Content.fileName}).then((res) => {
+      save({data: postData, fileName: this.Content.fileName, formTitle: postformTitle}).then((res) => {
         if (res. code === 200) {
           window.open(`http://139.196.85.119:3000/${res.data.msg}`, '_self')
         }
@@ -192,7 +193,8 @@ export default {
   }
 }
 .fromTitleArr {
-  margin-top: 5px;
+  margin-top: 20px;
+  text-align: left;
   .formTitle {
     margin-left: 5px;
     width: 200px;

@@ -1,16 +1,11 @@
 <template>
   <div id="app">
     <div class="content">
-      <div class="setting-icon">
+      <div class="setting-icon" v-if="showUpload" >
         <el-button type="primary" icon="el-icon-setting" @click="isShow = true">上传设置</el-button>
       </div>
-      <upload class="upload" @getContent="getContent"></upload>
+      <upload v-if="showUpload" class="upload" @getContent="getContent"></upload>
       <word :tagsArr="tagsArr" ref="word" :Content="Content"></word>
-      <div v-if="JSON.stringify(uploadData) !=='{}'">
-        <div>
-          <el-button type="primary" @click="download">下载</el-button>
-        </div>
-      </div>
       <upload-setting :tagsArr="tagsArr" @regetTags="getTags" :visible.sync="isShow"></upload-setting>
     </div>
   </div>
@@ -35,6 +30,7 @@ export default {
       tagsArr: [],
       Content: {},
       uploadData: {},
+      showUpload: true
     }
   },
   created() {
@@ -59,10 +55,12 @@ export default {
     getContent(data) {
       console.log(data)
       this.Content = data
+      this.showUpload = false
     },
     getUploadData(data) {
       console.log(data)
       this.uploadData = data
+
     },
     download() {},
   },
